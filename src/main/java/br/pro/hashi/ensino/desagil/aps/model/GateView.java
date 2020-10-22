@@ -1,23 +1,29 @@
 package br.pro.hashi.ensino.desagil.aps.model;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
+import java.net.URL;
 
 
-public class GateView extends JPanel implements ActionListener {
+public class GateView extends FixedPanel implements ActionListener, MouseListener{
 
     private final Gate gate;
 
     private final JCheckBox inputCheck0;
     private final JCheckBox inputCheck1;
-    private final JCheckBox outputCheck;
+    //private final JCheckBox outputCheck;
 
     Switch inputSwitch0 = new Switch();
     Switch inputSwitch1 = new Switch();
+    Light light = new Light(255,0,0);
+
+    //private Color color;
+    private Color true_color;
+    private final Image image;
 
     public GateView(Gate gate) {
+        super(200, 100);
         this.gate = gate;
         int inputSize = gate.getInputSize();
 
@@ -29,30 +35,37 @@ public class GateView extends JPanel implements ActionListener {
         inputCheck1.setMnemonic(KeyEvent.VK_C);
         inputCheck1.setSelected(true);
 
-        outputCheck = new JCheckBox();
-        outputCheck.setMnemonic(KeyEvent.VK_C);
-        outputCheck.setSelected(true);
-
         JLabel inputLabel = new JLabel("Input");
         JLabel outputLabel = new JLabel("Output");
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(inputLabel, 15, 5, 75, 25);
 
-        add(inputLabel);
-        add(inputCheck0);
-        inputCheck0.addActionListener(this);
-        gate.connect(0, inputSwitch0);
+        if (inputSize == 1){
+            add(inputCheck0, 20, 40, 25, 25);
+            inputCheck0.addActionListener(this);
+            gate.connect(0, inputSwitch0);
+        }
 
         if (inputSize == 2){
-            add(inputCheck1);
+            add(inputCheck0, 20, 30, 25, 25);
+            inputCheck0.addActionListener(this);
+            gate.connect(0, inputSwitch0);
+
+            add(inputCheck1, 20, 50, 25, 25);
             inputCheck1.addActionListener(this);
             gate.connect(1, inputSwitch1);
         }
 
-        add(outputLabel);
-        add(outputCheck);
+        true_color = Color.RED;
 
-        outputCheck.setEnabled(false);
+        String name = gate.toString() + ".png";
+        URL url = getClass().getClassLoader().getResource(name);
+        image = getToolkit().getImage(url);
+
+        add(outputLabel, 140, 5, 75, 25);
+        light.connect(0, gate);
+
+        addMouseListener(this);
 
         update();
     }
@@ -74,13 +87,56 @@ public class GateView extends JPanel implements ActionListener {
                 inputSwitch1.turnOff();
             }
         }
-
-        boolean returnRead = gate.read();
-        outputCheck.setSelected(returnRead);
+        repaint();
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        update();
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent event) {
+
+        int x = event.getX();
+        int y = event.getY();
+
+        if (x >= 148 && x < 168 && y >= 43 && y < 63) {
+
+            light.setColor(JColorChooser.showDialog(this, null, true_color));
+
+            repaint();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent event) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event) {
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+
+        g.drawImage(image, 50, 30, 90, 45, this);
+
+        g.setColor(light.getColor());
+        g.fillOval(148, 43, 20, 20);
+
+        getToolkit().sync();
+
         update();
     }
 }

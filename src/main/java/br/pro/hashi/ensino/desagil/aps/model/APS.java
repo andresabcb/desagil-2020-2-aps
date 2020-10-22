@@ -7,11 +7,11 @@ public class APS {
     public static void main(String[] args) {
 
         LinkedList<Gate> model = new LinkedList<>();
-        model.add(new NotGate());
         model.add(new OrGate());
         model.add(new AndGate());
         model.add(new NandGate());
         model.add(new XorGate());
+        model.add(new NotGate());
 
         View view = new View(model);
 
