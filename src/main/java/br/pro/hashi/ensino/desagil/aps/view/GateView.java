@@ -1,12 +1,20 @@
-package br.pro.hashi.ensino.desagil.aps.model;
+package br.pro.hashi.ensino.desagil.aps.view;
+
+import br.pro.hashi.ensino.desagil.aps.model.FixedPanel;
+import br.pro.hashi.ensino.desagil.aps.model.Gate;
+import br.pro.hashi.ensino.desagil.aps.model.Light;
+import br.pro.hashi.ensino.desagil.aps.model.Switch;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URL;
 
 
-public class GateView extends FixedPanel implements ActionListener, MouseListener{
+public class GateView extends FixedPanel implements ActionListener, MouseListener {
 
     private final Gate gate;
 
@@ -14,12 +22,12 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
     private final JCheckBox inputCheck1;
     //private final JCheckBox outputCheck;
 
-    Switch inputSwitch0 = new Switch();
-    Switch inputSwitch1 = new Switch();
-    Light light = new Light(255,0,0);
+    private final Switch inputSwitch0;
+    private final Switch inputSwitch1;
+    private final Light light;
 
     //private Color color;
-    private Color true_color;
+    private final Color true_color;
     private final Image image;
 
     public GateView(Gate gate) {
@@ -27,12 +35,14 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
         this.gate = gate;
         int inputSize = gate.getInputSize();
 
+        inputSwitch0 = new Switch();
+        inputSwitch1 = new Switch();
+        light = new Light(255, 0, 0);
+
         inputCheck0 = new JCheckBox();
-        inputCheck0.setMnemonic(KeyEvent.VK_C);
         inputCheck0.setSelected(true);
 
         inputCheck1 = new JCheckBox();
-        inputCheck1.setMnemonic(KeyEvent.VK_C);
         inputCheck1.setSelected(true);
 
         JLabel inputLabel = new JLabel("Input");
@@ -40,18 +50,18 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
         add(inputLabel, 15, 5, 75, 25);
 
-        if (inputSize == 1){
-            add(inputCheck0, 20, 40, 25, 25);
+        if (inputSize == 1) {
+            add(inputCheck0, 30, 40, 20, 20);
             inputCheck0.addActionListener(this);
             gate.connect(0, inputSwitch0);
         }
 
-        if (inputSize == 2){
-            add(inputCheck0, 20, 30, 25, 25);
+        if (inputSize == 2) {
+            add(inputCheck0, 30, 30, 20, 20);
             inputCheck0.addActionListener(this);
             gate.connect(0, inputSwitch0);
 
-            add(inputCheck1, 20, 50, 25, 25);
+            add(inputCheck1, 30, 50, 20, 20);
             inputCheck1.addActionListener(this);
             gate.connect(1, inputSwitch1);
         }
@@ -73,10 +83,9 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
     private void update() {
         int inputSize = gate.getInputSize();
 
-        if(inputCheck0.isSelected()){
+        if (inputCheck0.isSelected()) {
             inputSwitch0.turnOn();
-        }
-        else{
+        } else {
             inputSwitch0.turnOff();
         }
 
@@ -133,7 +142,7 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
         g.drawImage(image, 50, 30, 90, 45, this);
 
         g.setColor(light.getColor());
-        g.fillOval(148, 43, 20, 20);
+        g.fillOval(140, 43, 20, 20);
 
         getToolkit().sync();
 
