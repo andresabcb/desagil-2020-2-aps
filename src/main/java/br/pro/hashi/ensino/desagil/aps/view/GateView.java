@@ -113,11 +113,11 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
         // calculando se a distancia entre os dois pontos
         // está dentro do raio do círculo = 10
-        int xquadrado = (x-xmouse)*(x-xmouse);
-        int yquadrado = (y-ymouse)*(y-ymouse);
-        double m = Math.sqrt(xquadrado+yquadrado);
+        int xquadrado = (x - xmouse) * (x - xmouse);
+        int yquadrado = (y - ymouse) * (y - ymouse);
+        double m = Math.sqrt(xquadrado + yquadrado);
 
-        if (m<=10) {
+        if (m <= 10) {
 
             light.setColor(JColorChooser.showDialog(this, null, true_color));
 
