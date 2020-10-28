@@ -27,6 +27,6 @@ public class OrGate extends Gate {
         nand[inputIndex].connect(0, emitter); // as duplas de entradas são iguais
         nand[inputIndex].connect(1, emitter);
 
-        nand[2].connect(inputIndex,nand[inputIndex]); // o último nand usa os anteriores nas entradas
+        nand[2].connect(inputIndex, nand[inputIndex]); // o último nand usa os anteriores nas entradas
     }
 }
