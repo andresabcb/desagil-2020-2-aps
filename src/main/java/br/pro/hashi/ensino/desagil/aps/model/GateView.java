@@ -97,11 +97,18 @@ public class GateView extends FixedPanel implements ActionListener, MouseListene
 
     @Override
     public void mouseClicked(MouseEvent event) {
+        int x = 158; //centro do círculo em x
+        int y = 53; //centro do círculo em y
+        int xmouse = event.getX();
+        int ymouse = event.getY();
 
-        int x = event.getX();
-        int y = event.getY();
+        // calculando se a distancia entre os dois pontos
+        // está dentro do raio do círculo = 10
+        int xquadrado = (x-xmouse)*(x-xmouse);
+        int yquadrado = (y-ymouse)*(y-ymouse);
+        double m = Math.sqrt(xquadrado+yquadrado);
 
-        if (x >= 148 && x < 168 && y >= 43 && y < 63) {
+        if (m<=10) {
 
             light.setColor(JColorChooser.showDialog(this, null, true_color));
 
